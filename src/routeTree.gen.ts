@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as MembersRouteImport } from './routes/members'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommitteesRouteImport } from './routes/committees'
 import { Route as BusinessCardRouteImport } from './routes/business-card'
@@ -21,6 +22,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const MembershipRoute = MembershipRouteImport.update({
   id: '/membership',
   path: '/membership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembersRoute = MembersRouteImport.update({
+  id: '/members',
+  path: '/members',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/business-card': typeof BusinessCardRoute
   '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
+  '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/business-card': typeof BusinessCardRoute
   '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
+  '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/business-card': typeof BusinessCardRoute
   '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
+  '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/business-card'
     | '/committees'
     | '/contact'
+    | '/members'
     | '/membership'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/business-card'
     | '/committees'
     | '/contact'
+    | '/members'
     | '/membership'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/business-card'
     | '/committees'
     | '/contact'
+    | '/members'
     | '/membership'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   BusinessCardRoute: typeof BusinessCardRoute
   CommitteesRoute: typeof CommitteesRoute
   ContactRoute: typeof ContactRoute
+  MembersRoute: typeof MembersRoute
   MembershipRoute: typeof MembershipRoute
 }
 
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/membership'
       fullPath: '/membership'
       preLoaderRoute: typeof MembershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/members': {
+      id: '/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof MembersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessCardRoute: BusinessCardRoute,
   CommitteesRoute: CommitteesRoute,
   ContactRoute: ContactRoute,
+  MembersRoute: MembersRoute,
   MembershipRoute: MembershipRoute,
 }
 export const routeTree = rootRouteImport
