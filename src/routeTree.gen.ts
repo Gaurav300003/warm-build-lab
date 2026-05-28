@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BusinessCardRouteImport } from './routes/business-card'
 import { Route as BhawanRouteImport } from './routes/bhawan'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AboutRouteImport } from './routes/about'
@@ -24,6 +25,11 @@ const MembershipRoute = MembershipRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessCardRoute = BusinessCardRouteImport.update({
+  id: '/business-card',
+  path: '/business-card',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BhawanRoute = BhawanRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
+  '/business-card': typeof BusinessCardRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
+  '/business-card': typeof BusinessCardRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
+  '/business-card': typeof BusinessCardRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/about'
     | '/advertise'
     | '/bhawan'
+    | '/business-card'
     | '/contact'
     | '/membership'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/advertise' | '/bhawan' | '/contact' | '/membership'
+  to:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/bhawan'
+    | '/business-card'
+    | '/contact'
+    | '/membership'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/advertise'
     | '/bhawan'
+    | '/business-card'
     | '/contact'
     | '/membership'
   fileRoutesById: FileRoutesById
@@ -98,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdvertiseRoute: typeof AdvertiseRoute
   BhawanRoute: typeof BhawanRoute
+  BusinessCardRoute: typeof BusinessCardRoute
   ContactRoute: typeof ContactRoute
   MembershipRoute: typeof MembershipRoute
 }
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business-card': {
+      id: '/business-card'
+      path: '/business-card'
+      fullPath: '/business-card'
+      preLoaderRoute: typeof BusinessCardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bhawan': {
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdvertiseRoute: AdvertiseRoute,
   BhawanRoute: BhawanRoute,
+  BusinessCardRoute: BusinessCardRoute,
   ContactRoute: ContactRoute,
   MembershipRoute: MembershipRoute,
 }
