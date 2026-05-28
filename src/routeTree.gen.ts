@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsefulLinksRouteImport } from './routes/useful-links'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as MembersRouteImport } from './routes/members'
+import { Route as LandRecordsRouteImport } from './routes/land-records'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommitteesRouteImport } from './routes/committees'
 import { Route as BusinessCardRouteImport } from './routes/business-card'
@@ -33,6 +34,11 @@ const MembershipRoute = MembershipRouteImport.update({
 const MembersRoute = MembersRouteImport.update({
   id: '/members',
   path: '/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LandRecordsRoute = LandRecordsRouteImport.update({
+  id: '/land-records',
+  path: '/land-records',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/business-card': typeof BusinessCardRoute
   '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
+  '/land-records': typeof LandRecordsRoute
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/business-card': typeof BusinessCardRoute
   '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
+  '/land-records': typeof LandRecordsRoute
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/business-card': typeof BusinessCardRoute
   '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
+  '/land-records': typeof LandRecordsRoute
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/business-card'
     | '/committees'
     | '/contact'
+    | '/land-records'
     | '/members'
     | '/membership'
     | '/useful-links'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/business-card'
     | '/committees'
     | '/contact'
+    | '/land-records'
     | '/members'
     | '/membership'
     | '/useful-links'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/business-card'
     | '/committees'
     | '/contact'
+    | '/land-records'
     | '/members'
     | '/membership'
     | '/useful-links'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   BusinessCardRoute: typeof BusinessCardRoute
   CommitteesRoute: typeof CommitteesRoute
   ContactRoute: typeof ContactRoute
+  LandRecordsRoute: typeof LandRecordsRoute
   MembersRoute: typeof MembersRoute
   MembershipRoute: typeof MembershipRoute
   UsefulLinksRoute: typeof UsefulLinksRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/members'
       fullPath: '/members'
       preLoaderRoute: typeof MembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/land-records': {
+      id: '/land-records'
+      path: '/land-records'
+      fullPath: '/land-records'
+      preLoaderRoute: typeof LandRecordsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessCardRoute: BusinessCardRoute,
   CommitteesRoute: CommitteesRoute,
   ContactRoute: ContactRoute,
+  LandRecordsRoute: LandRecordsRoute,
   MembersRoute: MembersRoute,
   MembershipRoute: MembershipRoute,
   UsefulLinksRoute: UsefulLinksRoute,
