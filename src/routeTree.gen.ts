@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CommitteesRouteImport } from './routes/committees'
 import { Route as BusinessCardRouteImport } from './routes/business-card'
 import { Route as BhawanRouteImport } from './routes/bhawan'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
@@ -25,6 +26,11 @@ const MembershipRoute = MembershipRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommitteesRoute = CommitteesRouteImport.update({
+  id: '/committees',
+  path: '/committees',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessCardRoute = BusinessCardRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
+  '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
+  '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
+  '/committees': typeof CommitteesRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/advertise'
     | '/bhawan'
     | '/business-card'
+    | '/committees'
     | '/contact'
     | '/membership'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/advertise'
     | '/bhawan'
     | '/business-card'
+    | '/committees'
     | '/contact'
     | '/membership'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/advertise'
     | '/bhawan'
     | '/business-card'
+    | '/committees'
     | '/contact'
     | '/membership'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   AdvertiseRoute: typeof AdvertiseRoute
   BhawanRoute: typeof BhawanRoute
   BusinessCardRoute: typeof BusinessCardRoute
+  CommitteesRoute: typeof CommitteesRoute
   ContactRoute: typeof ContactRoute
   MembershipRoute: typeof MembershipRoute
 }
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/committees': {
+      id: '/committees'
+      path: '/committees'
+      fullPath: '/committees'
+      preLoaderRoute: typeof CommitteesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business-card': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdvertiseRoute: AdvertiseRoute,
   BhawanRoute: BhawanRoute,
   BusinessCardRoute: BusinessCardRoute,
+  CommitteesRoute: CommitteesRoute,
   ContactRoute: ContactRoute,
   MembershipRoute: MembershipRoute,
 }
