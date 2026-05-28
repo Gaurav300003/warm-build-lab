@@ -33,16 +33,15 @@ function BhawanPage() {
           <div>
             <div className="eyebrow mb-3">Amenities</div>
             <div className="grid grid-cols-2 gap-3">
-              {[
-                [Users, "300-seat capacity"],
-                [Projector, "HD projector & screen"],
-                [Mic, "PA system"],
-                [Snowflake, "Fully air-conditioned"],
-                [ParkingCircle, "On-site parking"],
-                [Utensils, "Catering pantry"],
-              ].map(([Icon, t]) => (
-                <div key={t as string} className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
-                  {/* @ts-expect-error icon */}
+              {([
+                { Icon: Users, t: "300-seat capacity" },
+                { Icon: Projector, t: "HD projector & screen" },
+                { Icon: Mic, t: "PA system" },
+                { Icon: Snowflake, t: "Fully air-conditioned" },
+                { Icon: ParkingCircle, t: "On-site parking" },
+                { Icon: Utensils, t: "Catering pantry" },
+              ]).map(({ Icon, t }) => (
+                <div key={t} className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
                   <Icon className="h-5 w-5 text-brand" />
                   <div className="text-sm font-medium text-ink">{t}</div>
                 </div>
