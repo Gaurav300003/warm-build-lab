@@ -9,8 +9,68 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UsefulLinksRouteImport } from './routes/useful-links'
+import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as MembersRouteImport } from './routes/members'
+import { Route as LandRecordsRouteImport } from './routes/land-records'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CommitteesRouteImport } from './routes/committees'
+import { Route as BusinessCardRouteImport } from './routes/business-card'
+import { Route as BhawanRouteImport } from './routes/bhawan'
+import { Route as AdvertiseRouteImport } from './routes/advertise'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UsefulLinksRoute = UsefulLinksRouteImport.update({
+  id: '/useful-links',
+  path: '/useful-links',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembershipRoute = MembershipRouteImport.update({
+  id: '/membership',
+  path: '/membership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembersRoute = MembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LandRecordsRoute = LandRecordsRouteImport.update({
+  id: '/land-records',
+  path: '/land-records',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommitteesRoute = CommitteesRouteImport.update({
+  id: '/committees',
+  path: '/committees',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessCardRoute = BusinessCardRouteImport.update({
+  id: '/business-card',
+  path: '/business-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BhawanRoute = BhawanRouteImport.update({
+  id: '/bhawan',
+  path: '/bhawan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertiseRoute = AdvertiseRouteImport.update({
+  id: '/advertise',
+  path: '/advertise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +79,172 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/bhawan': typeof BhawanRoute
+  '/business-card': typeof BusinessCardRoute
+  '/committees': typeof CommitteesRoute
+  '/contact': typeof ContactRoute
+  '/land-records': typeof LandRecordsRoute
+  '/members': typeof MembersRoute
+  '/membership': typeof MembershipRoute
+  '/useful-links': typeof UsefulLinksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/bhawan': typeof BhawanRoute
+  '/business-card': typeof BusinessCardRoute
+  '/committees': typeof CommitteesRoute
+  '/contact': typeof ContactRoute
+  '/land-records': typeof LandRecordsRoute
+  '/members': typeof MembersRoute
+  '/membership': typeof MembershipRoute
+  '/useful-links': typeof UsefulLinksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/bhawan': typeof BhawanRoute
+  '/business-card': typeof BusinessCardRoute
+  '/committees': typeof CommitteesRoute
+  '/contact': typeof ContactRoute
+  '/land-records': typeof LandRecordsRoute
+  '/members': typeof MembersRoute
+  '/membership': typeof MembershipRoute
+  '/useful-links': typeof UsefulLinksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/bhawan'
+    | '/business-card'
+    | '/committees'
+    | '/contact'
+    | '/land-records'
+    | '/members'
+    | '/membership'
+    | '/useful-links'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/bhawan'
+    | '/business-card'
+    | '/committees'
+    | '/contact'
+    | '/land-records'
+    | '/members'
+    | '/membership'
+    | '/useful-links'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/bhawan'
+    | '/business-card'
+    | '/committees'
+    | '/contact'
+    | '/land-records'
+    | '/members'
+    | '/membership'
+    | '/useful-links'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdvertiseRoute: typeof AdvertiseRoute
+  BhawanRoute: typeof BhawanRoute
+  BusinessCardRoute: typeof BusinessCardRoute
+  CommitteesRoute: typeof CommitteesRoute
+  ContactRoute: typeof ContactRoute
+  LandRecordsRoute: typeof LandRecordsRoute
+  MembersRoute: typeof MembersRoute
+  MembershipRoute: typeof MembershipRoute
+  UsefulLinksRoute: typeof UsefulLinksRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/useful-links': {
+      id: '/useful-links'
+      path: '/useful-links'
+      fullPath: '/useful-links'
+      preLoaderRoute: typeof UsefulLinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/membership': {
+      id: '/membership'
+      path: '/membership'
+      fullPath: '/membership'
+      preLoaderRoute: typeof MembershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/members': {
+      id: '/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof MembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/land-records': {
+      id: '/land-records'
+      path: '/land-records'
+      fullPath: '/land-records'
+      preLoaderRoute: typeof LandRecordsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/committees': {
+      id: '/committees'
+      path: '/committees'
+      fullPath: '/committees'
+      preLoaderRoute: typeof CommitteesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business-card': {
+      id: '/business-card'
+      path: '/business-card'
+      fullPath: '/business-card'
+      preLoaderRoute: typeof BusinessCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bhawan': {
+      id: '/bhawan'
+      path: '/bhawan'
+      fullPath: '/bhawan'
+      preLoaderRoute: typeof BhawanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertise': {
+      id: '/advertise'
+      path: '/advertise'
+      fullPath: '/advertise'
+      preLoaderRoute: typeof AdvertiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +257,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdvertiseRoute: AdvertiseRoute,
+  BhawanRoute: BhawanRoute,
+  BusinessCardRoute: BusinessCardRoute,
+  CommitteesRoute: CommitteesRoute,
+  ContactRoute: ContactRoute,
+  LandRecordsRoute: LandRecordsRoute,
+  MembersRoute: MembersRoute,
+  MembershipRoute: MembershipRoute,
+  UsefulLinksRoute: UsefulLinksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
