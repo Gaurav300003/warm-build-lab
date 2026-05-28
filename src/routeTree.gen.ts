@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BhawanRouteImport } from './routes/bhawan'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -22,6 +23,11 @@ const MembershipRoute = MembershipRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BhawanRoute = BhawanRouteImport.update({
+  id: '/bhawan',
+  path: '/bhawan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -38,12 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bhawan': typeof BhawanRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bhawan': typeof BhawanRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bhawan': typeof BhawanRoute
   '/contact': typeof ContactRoute
   '/membership': typeof MembershipRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/membership'
+  fullPaths: '/' | '/about' | '/bhawan' | '/contact' | '/membership'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/membership'
-  id: '__root__' | '/' | '/about' | '/contact' | '/membership'
+  to: '/' | '/about' | '/bhawan' | '/contact' | '/membership'
+  id: '__root__' | '/' | '/about' | '/bhawan' | '/contact' | '/membership'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BhawanRoute: typeof BhawanRoute
   ContactRoute: typeof ContactRoute
   MembershipRoute: typeof MembershipRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bhawan': {
+      id: '/bhawan'
+      path: '/bhawan'
+      fullPath: '/bhawan'
+      preLoaderRoute: typeof BhawanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BhawanRoute: BhawanRoute,
   ContactRoute: ContactRoute,
   MembershipRoute: MembershipRoute,
 }
