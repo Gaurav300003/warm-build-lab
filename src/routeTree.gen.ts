@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UsefulLinksRouteImport } from './routes/useful-links'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as MembersRouteImport } from './routes/members'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -19,6 +20,11 @@ import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UsefulLinksRoute = UsefulLinksRouteImport.update({
+  id: '/useful-links',
+  path: '/useful-links',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MembershipRoute = MembershipRouteImport.update({
   id: '/membership',
   path: '/membership',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
+  '/useful-links': typeof UsefulLinksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
+  '/useful-links': typeof UsefulLinksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
+  '/useful-links': typeof UsefulLinksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/members'
     | '/membership'
+    | '/useful-links'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/members'
     | '/membership'
+    | '/useful-links'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/members'
     | '/membership'
+    | '/useful-links'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,10 +157,18 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   MembersRoute: typeof MembersRoute
   MembershipRoute: typeof MembershipRoute
+  UsefulLinksRoute: typeof UsefulLinksRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/useful-links': {
+      id: '/useful-links'
+      path: '/useful-links'
+      fullPath: '/useful-links'
+      preLoaderRoute: typeof UsefulLinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/membership': {
       id: '/membership'
       path: '/membership'
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   MembersRoute: MembersRoute,
   MembershipRoute: MembershipRoute,
+  UsefulLinksRoute: UsefulLinksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
