@@ -6,7 +6,8 @@ import { Field, TextInput, TextArea, Select } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { Users, Projector, Snowflake, Mic, ParkingCircle, Utensils } from "lucide-react";
 import bhawan from "@/assets/bhawan.jpg";
-import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
+import { formDataToFields } from "@/lib/whatsapp";
+import { submitAndNotify } from "@/lib/submissions";
 
 export const Route = createFileRoute("/bhawan")({
   head: () => ({
@@ -70,13 +71,33 @@ function BhawanPage() {
           {done ? (
             <FormSuccess message="Booking request sent. The AESA admin will confirm or decline on WhatsApp / phone shortly." />
           ) : (
-            <form onSubmit={(e) => {
+            <form onSubmit={async (e) => {
               e.preventDefault();
-              sendToWhatsApp("New Bhawan Booking Request — AESA", formDataToFields(e.currentTarget, {
-                name: "Applicant", phone: "Mobile", email: "Email", purpose: "Event",
-                date: "Date", hall: "Hall", start: "Start", end: "End",
-                attendees: "Attendees", member: "Member?", memberId: "Member ID", notes: "Notes",
-              }));
+              const form = e.currentTarget;
+              const fd = new FormData(form);
+              await submitAndNotify(
+                "bhawan_bookings",
+                {
+                  applicant: fd.get("name"),
+                  phone: fd.get("phone"),
+                  email: fd.get("email") || null,
+                  purpose: fd.get("purpose"),
+                  booking_date: fd.get("date"),
+                  hall: fd.get("hall"),
+                  start_time: fd.get("start"),
+                  end_time: fd.get("end"),
+                  attendees: Number(fd.get("attendees") || 0),
+                  is_member: fd.get("member") === "Yes",
+                  member_id: fd.get("memberId") || null,
+                  notes: fd.get("notes") || null,
+                },
+                "New Bhawan Booking Request — AESA",
+                formDataToFields(form, {
+                  name: "Applicant", phone: "Mobile", email: "Email", purpose: "Event",
+                  date: "Date", hall: "Hall", start: "Start", end: "End",
+                  attendees: "Attendees", member: "Member?", memberId: "Member ID", notes: "Notes",
+                }),
+              );
               setDone(true);
             }} className="grid sm:grid-cols-2 gap-4">
               <Field label="Applicant Name" required><TextInput required name="name" /></Field>
