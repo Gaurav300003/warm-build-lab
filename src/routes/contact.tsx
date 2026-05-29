@@ -5,6 +5,7 @@ import { Section } from "@/components/site/Section";
 import { Field, TextInput, TextArea } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { MapPin, Phone, Mail, Facebook, Twitter, Youtube, MessageCircle } from "lucide-react";
+import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -34,6 +35,16 @@ function ContactPage() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  sendToWhatsApp(
+                    "New Contact Message — aesanagar.org",
+                    formDataToFields(e.currentTarget, {
+                      name: "Name",
+                      phone: "Phone",
+                      email: "Email",
+                      subject: "Subject",
+                      message: "Message",
+                    }),
+                  );
                   setDone(true);
                 }}
                 className="grid sm:grid-cols-2 gap-4"

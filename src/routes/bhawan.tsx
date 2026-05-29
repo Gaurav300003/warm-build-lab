@@ -6,6 +6,7 @@ import { Field, TextInput, TextArea, Select } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { Users, Projector, Snowflake, Mic, ParkingCircle, Utensils } from "lucide-react";
 import bhawan from "@/assets/bhawan.jpg";
+import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/bhawan")({
   head: () => ({
@@ -69,14 +70,22 @@ function BhawanPage() {
           {done ? (
             <FormSuccess message="Booking request sent. The AESA admin will confirm or decline on WhatsApp / phone shortly." />
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setDone(true); }} className="grid sm:grid-cols-2 gap-4">
-              <Field label="Applicant Name" required><TextInput required /></Field>
-              <Field label="Mobile Number" required><TextInput required type="tel" placeholder="+91" /></Field>
-              <Field label="Email Address"><TextInput type="email" /></Field>
-              <Field label="Event / Purpose" required><TextInput required placeholder="e.g. Wedding reception, AGM" /></Field>
-              <Field label="Booking Date" required><TextInput required type="date" /></Field>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              sendToWhatsApp("New Bhawan Booking Request — AESA", formDataToFields(e.currentTarget, {
+                name: "Applicant", phone: "Mobile", email: "Email", purpose: "Event",
+                date: "Date", hall: "Hall", start: "Start", end: "End",
+                attendees: "Attendees", member: "Member?", memberId: "Member ID", notes: "Notes",
+              }));
+              setDone(true);
+            }} className="grid sm:grid-cols-2 gap-4">
+              <Field label="Applicant Name" required><TextInput required name="name" /></Field>
+              <Field label="Mobile Number" required><TextInput required name="phone" type="tel" placeholder="+91" /></Field>
+              <Field label="Email Address"><TextInput name="email" type="email" /></Field>
+              <Field label="Event / Purpose" required><TextInput required name="purpose" placeholder="e.g. Wedding reception, AGM" /></Field>
+              <Field label="Booking Date" required><TextInput required name="date" type="date" /></Field>
               <Field label="Hall / Area" required>
-                <Select required defaultValue="">
+                <Select required name="hall" defaultValue="">
                   <option value="" disabled>Choose…</option>
                   <option>Main Hall</option>
                   <option>Conference Room</option>
@@ -84,14 +93,14 @@ function BhawanPage() {
                   <option>Full Venue</option>
                 </Select>
               </Field>
-              <Field label="Start Time" required><TextInput required type="time" /></Field>
-              <Field label="End Time" required><TextInput required type="time" /></Field>
-              <Field label="Expected Attendees" required><TextInput required type="number" min={1} /></Field>
+              <Field label="Start Time" required><TextInput required name="start" type="time" /></Field>
+              <Field label="End Time" required><TextInput required name="end" type="time" /></Field>
+              <Field label="Expected Attendees" required><TextInput required name="attendees" type="number" min={1} /></Field>
               <Field label="AESA Member?">
-                <Select defaultValue="No"><option>No</option><option>Yes</option></Select>
+                <Select name="member" defaultValue="No"><option>No</option><option>Yes</option></Select>
               </Field>
-              <Field label="Member ID (if applicable)"><TextInput /></Field>
-              <Field label="Additional Notes" full><TextArea rows={3} /></Field>
+              <Field label="Member ID (if applicable)"><TextInput name="memberId" /></Field>
+              <Field label="Additional Notes" full><TextArea name="notes" rows={3} /></Field>
               <div className="sm:col-span-2">
                 <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-md bg-ink px-6 py-3 text-sm font-semibold text-background hover:opacity-90">
                   Send Booking Request →

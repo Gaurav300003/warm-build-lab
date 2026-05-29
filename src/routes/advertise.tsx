@@ -5,6 +5,7 @@ import { Section } from "@/components/site/Section";
 import { Field, TextInput, Select } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { CheckCircle2 } from "lucide-react";
+import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/advertise")({
   head: () => ({
@@ -56,19 +57,26 @@ function AdvertisePage() {
           {done ? (
             <FormSuccess message="Thanks — the AESA admin received your enquiry on WhatsApp and will reach out to discuss." />
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setDone(true); }} className="grid sm:grid-cols-2 gap-4">
-              <Field label="Your Name" required><TextInput required /></Field>
-              <Field label="Company / Brand" required><TextInput required /></Field>
-              <Field label="Phone" required><TextInput required type="tel" placeholder="+91" /></Field>
-              <Field label="Email" required><TextInput required type="email" /></Field>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              sendToWhatsApp("New Advertising Enquiry — AESA", formDataToFields(e.currentTarget, {
+                name: "Name", company: "Company", phone: "Phone", email: "Email",
+                package: "Package", asset: "Banner/Logo",
+              }));
+              setDone(true);
+            }} className="grid sm:grid-cols-2 gap-4">
+              <Field label="Your Name" required><TextInput required name="name" /></Field>
+              <Field label="Company / Brand" required><TextInput required name="company" /></Field>
+              <Field label="Phone" required><TextInput required name="phone" type="tel" placeholder="+91" /></Field>
+              <Field label="Email" required><TextInput required name="email" type="email" /></Field>
               <Field label="Package" required>
-                <Select required defaultValue="">
+                <Select required name="package" defaultValue="">
                   <option value="" disabled>Choose package…</option>
                   {PACKAGES.map((p) => <option key={p.name}>{p.name}</option>)}
                 </Select>
               </Field>
               <Field label="Banner / Logo Upload">
-                <TextInput type="file" accept=".png,.jpg,.jpeg,.pdf" className="!py-2" />
+                <TextInput name="asset" type="file" accept=".png,.jpg,.jpeg,.pdf" className="!py-2" />
               </Field>
               <div className="sm:col-span-2">
                 <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-md bg-ink px-6 py-3 text-sm font-semibold text-background hover:opacity-90">
