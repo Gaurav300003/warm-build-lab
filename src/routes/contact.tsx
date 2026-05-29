@@ -5,7 +5,8 @@ import { Section } from "@/components/site/Section";
 import { Field, TextInput, TextArea } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { MapPin, Phone, Mail, Facebook, Twitter, Youtube, MessageCircle } from "lucide-react";
-import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
+import { formDataToFields } from "@/lib/whatsapp";
+import { submitAndNotify } from "@/lib/submissions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -33,11 +34,21 @@ function ContactPage() {
               <FormSuccess message="Thanks — your message has been delivered to the AESA admin via WhatsApp. We'll get back to you shortly." />
             ) : (
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  sendToWhatsApp(
+                  const form = e.currentTarget;
+                  const fd = new FormData(form);
+                  await submitAndNotify(
+                    "contact_messages",
+                    {
+                      name: fd.get("name"),
+                      phone: fd.get("phone"),
+                      email: fd.get("email") || null,
+                      subject: fd.get("subject"),
+                      message: fd.get("message"),
+                    },
                     "New Contact Message — aesanagar.org",
-                    formDataToFields(e.currentTarget, {
+                    formDataToFields(form, {
                       name: "Name",
                       phone: "Phone",
                       email: "Email",
