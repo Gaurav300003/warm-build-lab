@@ -5,6 +5,7 @@ import { Section } from "@/components/site/Section";
 import { Field, TextInput, TextArea, Select } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { CheckCircle2 } from "lucide-react";
+import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/membership")({
   head: () => ({
@@ -62,12 +63,20 @@ function MembershipPage() {
           {done ? (
             <FormSuccess message="Your membership request has been submitted. The AESA admin will review your documents and contact you on WhatsApp once approved." />
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setDone(true); }} className="grid sm:grid-cols-2 gap-4">
-              <Field label="Full Name" required><TextInput required /></Field>
-              <Field label="Mobile Number" required><TextInput required type="tel" placeholder="+91" /></Field>
-              <Field label="Email Address" required><TextInput required type="email" /></Field>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              sendToWhatsApp("New Membership Application — AESA Nagar", formDataToFields(e.currentTarget, {
+                name: "Name", phone: "Mobile", email: "Email", category: "Profession",
+                licence: "Licence No.", website: "Website / LinkedIn", address: "Office Address",
+                document: "Document", photo: "Profile Photo",
+              }));
+              setDone(true);
+            }} className="grid sm:grid-cols-2 gap-4">
+              <Field label="Full Name" required><TextInput required name="name" /></Field>
+              <Field label="Mobile Number" required><TextInput required name="phone" type="tel" placeholder="+91" /></Field>
+              <Field label="Email Address" required><TextInput required name="email" type="email" /></Field>
               <Field label="Profession / Category" required>
-                <Select required defaultValue="">
+                <Select required name="category" defaultValue="">
                   <option value="" disabled>Choose…</option>
                   <option>Architect</option>
                   <option>RCC / Structural Engineer</option>
@@ -77,14 +86,14 @@ function MembershipPage() {
                   <option>Other</option>
                 </Select>
               </Field>
-              <Field label="Registration / Licence No." required><TextInput required /></Field>
-              <Field label="Website / LinkedIn"><TextInput type="url" placeholder="https://" /></Field>
-              <Field label="Office Address" required full><TextArea required rows={3} /></Field>
+              <Field label="Registration / Licence No." required><TextInput required name="licence" /></Field>
+              <Field label="Website / LinkedIn"><TextInput name="website" type="url" placeholder="https://" /></Field>
+              <Field label="Office Address" required full><TextArea required name="address" rows={3} /></Field>
               <Field label="Document Upload (Licence / ID)" required>
-                <TextInput required type="file" accept=".pdf,.jpg,.jpeg,.png" className="!py-2" />
+                <TextInput required name="document" type="file" accept=".pdf,.jpg,.jpeg,.png" className="!py-2" />
               </Field>
               <Field label="Profile Photo">
-                <TextInput type="file" accept=".jpg,.jpeg,.png" className="!py-2" />
+                <TextInput name="photo" type="file" accept=".jpg,.jpeg,.png" className="!py-2" />
               </Field>
               <div className="sm:col-span-2 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                 <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-md bg-ink px-6 py-3 text-sm font-semibold text-background hover:opacity-90">
