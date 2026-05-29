@@ -18,8 +18,10 @@ import { Route as CommitteesRouteImport } from './routes/committees'
 import { Route as BusinessCardRouteImport } from './routes/business-card'
 import { Route as BhawanRouteImport } from './routes/bhawan'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const UsefulLinksRoute = UsefulLinksRouteImport.update({
   id: '/useful-links',
@@ -66,6 +68,11 @@ const AdvertiseRoute = AdvertiseRouteImport.update({
   path: '/advertise',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -76,10 +83,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
@@ -89,10 +102,12 @@ export interface FileRoutesByFullPath {
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
@@ -102,11 +117,13 @@ export interface FileRoutesByTo {
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
@@ -116,12 +133,14 @@ export interface FileRoutesById {
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/advertise'
     | '/bhawan'
     | '/business-card'
@@ -131,10 +150,12 @@ export interface FileRouteTypes {
     | '/members'
     | '/membership'
     | '/useful-links'
+    | '/admin/login'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/advertise'
     | '/bhawan'
     | '/business-card'
@@ -144,10 +165,12 @@ export interface FileRouteTypes {
     | '/members'
     | '/membership'
     | '/useful-links'
+    | '/admin/login'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/advertise'
     | '/bhawan'
     | '/business-card'
@@ -157,11 +180,13 @@ export interface FileRouteTypes {
     | '/members'
     | '/membership'
     | '/useful-links'
+    | '/admin/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AdvertiseRoute: typeof AdvertiseRoute
   BhawanRoute: typeof BhawanRoute
   BusinessCardRoute: typeof BusinessCardRoute
@@ -238,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdvertiseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -252,12 +284,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   AdvertiseRoute: AdvertiseRoute,
   BhawanRoute: BhawanRoute,
   BusinessCardRoute: BusinessCardRoute,

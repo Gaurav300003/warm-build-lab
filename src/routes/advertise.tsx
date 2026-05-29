@@ -5,7 +5,8 @@ import { Section } from "@/components/site/Section";
 import { Field, TextInput, Select } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { CheckCircle2 } from "lucide-react";
-import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
+import { formDataToFields } from "@/lib/whatsapp";
+import { submitAndNotify } from "@/lib/submissions";
 
 export const Route = createFileRoute("/advertise")({
   head: () => ({
@@ -57,12 +58,25 @@ function AdvertisePage() {
           {done ? (
             <FormSuccess message="Thanks — the AESA admin received your enquiry on WhatsApp and will reach out to discuss." />
           ) : (
-            <form onSubmit={(e) => {
+            <form onSubmit={async (e) => {
               e.preventDefault();
-              sendToWhatsApp("New Advertising Enquiry — AESA", formDataToFields(e.currentTarget, {
-                name: "Name", company: "Company", phone: "Phone", email: "Email",
-                package: "Package", asset: "Banner/Logo",
-              }));
+              const form = e.currentTarget;
+              const fd = new FormData(form);
+              await submitAndNotify(
+                "ad_enquiries",
+                {
+                  name: fd.get("name"),
+                  company: fd.get("company"),
+                  phone: fd.get("phone"),
+                  email: fd.get("email"),
+                  ad_package: fd.get("package"),
+                },
+                "New Advertising Enquiry — AESA",
+                formDataToFields(form, {
+                  name: "Name", company: "Company", phone: "Phone", email: "Email",
+                  package: "Package", asset: "Banner/Logo",
+                }),
+              );
               setDone(true);
             }} className="grid sm:grid-cols-2 gap-4">
               <Field label="Your Name" required><TextInput required name="name" /></Field>

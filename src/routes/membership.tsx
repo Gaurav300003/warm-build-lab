@@ -5,7 +5,8 @@ import { Section } from "@/components/site/Section";
 import { Field, TextInput, TextArea, Select } from "@/components/site/Field";
 import { FormSuccess } from "@/components/site/FormSuccess";
 import { CheckCircle2 } from "lucide-react";
-import { sendToWhatsApp, formDataToFields } from "@/lib/whatsapp";
+import { formDataToFields } from "@/lib/whatsapp";
+import { submitAndNotify } from "@/lib/submissions";
 
 export const Route = createFileRoute("/membership")({
   head: () => ({
@@ -63,13 +64,28 @@ function MembershipPage() {
           {done ? (
             <FormSuccess message="Your membership request has been submitted. The AESA admin will review your documents and contact you on WhatsApp once approved." />
           ) : (
-            <form onSubmit={(e) => {
+            <form onSubmit={async (e) => {
               e.preventDefault();
-              sendToWhatsApp("New Membership Application — AESA Nagar", formDataToFields(e.currentTarget, {
-                name: "Name", phone: "Mobile", email: "Email", category: "Profession",
-                licence: "Licence No.", website: "Website / LinkedIn", address: "Office Address",
-                document: "Document", photo: "Profile Photo",
-              }));
+              const form = e.currentTarget;
+              const fd = new FormData(form);
+              await submitAndNotify(
+                "membership_applications",
+                {
+                  name: fd.get("name"),
+                  phone: fd.get("phone"),
+                  email: fd.get("email"),
+                  profession: fd.get("category"),
+                  licence_no: fd.get("licence"),
+                  website: fd.get("website") || null,
+                  office_address: fd.get("address"),
+                },
+                "New Membership Application — AESA Nagar",
+                formDataToFields(form, {
+                  name: "Name", phone: "Mobile", email: "Email", category: "Profession",
+                  licence: "Licence No.", website: "Website / LinkedIn", address: "Office Address",
+                  document: "Document", photo: "Profile Photo",
+                }),
+              );
               setDone(true);
             }} className="grid sm:grid-cols-2 gap-4">
               <Field label="Full Name" required><TextInput required name="name" /></Field>
