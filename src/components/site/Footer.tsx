@@ -51,7 +51,10 @@ export function Footer() {
       <div className="border-t border-background/10">
         <div className="mx-auto max-w-7xl px-5 lg:px-8 py-5 flex flex-col md:flex-row gap-2 items-center justify-between text-xs text-background/55">
           <div>© {new Date().getFullYear()} AESA Nagar. All rights reserved.</div>
-          <div className="font-mono tracking-widest uppercase">Ahmednagar · Maharashtra · India</div>
+          <div className="flex items-center gap-4">
+            <Link to="/admin/login" className="font-mono tracking-widest uppercase hover:text-brand">Admin</Link>
+            <span className="font-mono tracking-widest uppercase">Ahmednagar · Maharashtra · India</span>
+          </div>
         </div>
       </div>
     </footer>
