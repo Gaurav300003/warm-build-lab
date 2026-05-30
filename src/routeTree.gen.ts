@@ -21,7 +21,7 @@ import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminLoginRouteImport } from './routes/admin_.login'
 
 const UsefulLinksRoute = UsefulLinksRouteImport.update({
   id: '/useful-links',
@@ -84,15 +84,15 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AdminRoute,
+  id: '/admin_/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
@@ -107,7 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
@@ -123,7 +123,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/bhawan': typeof BhawanRoute
   '/business-card': typeof BusinessCardRoute
@@ -133,7 +133,7 @@ export interface FileRoutesById {
   '/members': typeof MembersRoute
   '/membership': typeof MembershipRoute
   '/useful-links': typeof UsefulLinksRoute
-  '/admin/login': typeof AdminLoginRoute
+  '/admin_/login': typeof AdminLoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -180,13 +180,13 @@ export interface FileRouteTypes {
     | '/members'
     | '/membership'
     | '/useful-links'
-    | '/admin/login'
+    | '/admin_/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminRoute: typeof AdminRoute
   AdvertiseRoute: typeof AdvertiseRoute
   BhawanRoute: typeof BhawanRoute
   BusinessCardRoute: typeof BusinessCardRoute
@@ -196,6 +196,7 @@ export interface RootRouteChildren {
   MembersRoute: typeof MembersRoute
   MembershipRoute: typeof MembershipRoute
   UsefulLinksRoute: typeof UsefulLinksRoute
+  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -284,30 +285,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/login'
+    '/admin_/login': {
+      id: '/admin_/login'
+      path: '/admin/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AdminRouteChildren {
-  AdminLoginRoute: typeof AdminLoginRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminLoginRoute: AdminLoginRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminRoute: AdminRoute,
   AdvertiseRoute: AdvertiseRoute,
   BhawanRoute: BhawanRoute,
   BusinessCardRoute: BusinessCardRoute,
@@ -317,7 +308,18 @@ const rootRouteChildren: RootRouteChildren = {
   MembersRoute: MembersRoute,
   MembershipRoute: MembershipRoute,
   UsefulLinksRoute: UsefulLinksRoute,
+  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { Field, TextInput } from "@/components/site/Field";
 
-export const Route = createFileRoute("/admin/login")({
+export const Route = createFileRoute("/admin_/login")({
   head: () => ({ meta: [{ title: "Admin Login — AESA Nagar" }, { name: "robots", content: "noindex" }] }),
   component: AdminLogin,
 });
