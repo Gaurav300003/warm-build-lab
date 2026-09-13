@@ -80,7 +80,7 @@ def main():
             ' id="admin-root"><div class="text-center text-sm text-muted-foreground">Loading…</div>'
             "</section></main>")
     shell = re.sub(r"<main[^>]*>.*?</main>", body, shell, flags=re.S)
-    shell = shell.replace("<title>Committees", "<title>Admin")
+    shell = re.sub(r"<title>[^<]*</title>", "<title>Admin — AESA Nagar</title>", shell)
     shell = shell.replace("</body>", '<script src="assets/admin.js"></script></body>')
     pages["admin.html"] = shell
 
