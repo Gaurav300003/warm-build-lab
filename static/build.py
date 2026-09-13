@@ -65,8 +65,27 @@ def main():
     open(os.path.join(assets, "site.css"), "w").write(css)
     for f in os.listdir(os.path.join(SRC, "assets")):
         shutil.copy(os.path.join(SRC, "assets", f), os.path.join(assets, f))
+    pages = {}
     for path, out in PAGES.items():
-        open(os.path.join(ROOT, out), "w").write(convert(fetch(path)))
+        pages[out] = convert(fetch(path))
+
+    # admin pages get an extra script
+    pages["admin-login.html"] = pages["admin-login.html"].replace(
+        "</body>", '<script src="assets/admin.js"></script></body>'
+    )
+
+    # dashboard: reuse a page shell, swap the <main> body for the admin mount point
+    shell = pages["committees.html"]
+    body = ('<main class="flex-1"><section class="mx-auto max-w-7xl px-5 lg:px-8 py-14 lg:py-20"'
+            ' id="admin-root"><div class="text-center text-sm text-muted-foreground">Loading…</div>'
+            "</section></main>")
+    shell = re.sub(r"<main[^>]*>.*?</main>", body, shell, flags=re.S)
+    shell = shell.replace("<title>Committees", "<title>Admin")
+    shell = shell.replace("</body>", '<script src="assets/admin.js"></script></body>')
+    pages["admin.html"] = shell
+
+    for out, html in pages.items():
+        open(os.path.join(ROOT, out), "w").write(html)
         print("wrote", out)
 
 
